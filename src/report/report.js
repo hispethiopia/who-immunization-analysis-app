@@ -15,6 +15,16 @@ import colors from "../colors";
 //Define module
 const report = angular.module("report", []);
 
+/*************************
+ * Ethiopoian claendar
+ * */
+
+require("../libs/jquery.calendars.js");
+require("../libs/jquery.calendars.plus.js")
+require("../libs/jquery.calendars.ethiopian.min.js")
+var EthiopianCalendar = new $.calendars.calendars.ethiopian;
+
+
 //Define DashboardController
 report.controller("ReportController",
 	["d2Map", "d2Meta", "d2Data", "d2Utils", "$q",
@@ -779,18 +789,17 @@ report.controller("ReportController",
 
 
 			function performanceChartPeriod() {
-				console.log("test");
-				if (self.current.year === new Date().getFullYear().toString()) {
+				if (self.current.year === EthiopianCalendar.newDate().year().toString()) {
 					//First week/7 days into new month, show reporting period two months back
 					var p = self.current.year;
-					if (new Date().getDate() <= 7) {
-						if (new Date().getMonth()-1 < 10) p += "0";
-						return p + (new Date().getMonth()-1).toString();
+					if (EthiopianCalendar.newDate().getDate() <= 7) {
+						if (EthiopianCalendar.newDate().month()-1 < 10) p += "0";
+						return p + (EthiopianCalendar.newDate().month()-1).toString();
 					}
 					//Else show last month
 					else {
-						if (new Date().getMonth() < 10) p += "0";
-						return p + (new Date().getMonth()).toString();
+						if (EthiopianCalendar.newDate().month() < 10) p += "0";
+						return p + (EthiopianCalendar.newDate().month()).toString();
 					}
 				}
 				else {
@@ -801,14 +810,14 @@ report.controller("ReportController",
 
 			//Returns latest month number where data can be entered, e.g.
 			self.currentReportingMonth = function() {
-				return new Date().getMonth();
+				return EthiopianCalendar.newDate().month();
 			};
 
 
 			self.isPreviousMonth = function(month) {
-				if (self.current.year != new Date().getFullYear().toString()) return true;
+				if (self.current.year != EthiopianCalendar.newDate().year().toString()) return true;
 				else {
-					if (month < new Date().getMonth()) return true;
+					if (month < Ethiopiancalendar.newDate().month()) return true;
 					else return false;
 				}
 			};
@@ -975,7 +984,7 @@ report.controller("ReportController",
 				self.monitoringChartData = {
 					//todo: translate categories?
 					title: title,
-					categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+					categories: ["Mes", "Tik", "Hid", "Tah", "Tir", "Yek", "Meg", "Miaz", "Gin", "Sen", "Ham", "Neh"],
 					xAxisLabel: i18next.t("Month"),
 					yAxisLabel: i18next.t("Doses administered"),
 					series: series
@@ -1633,9 +1642,9 @@ report.controller("ReportController",
 				//Period options
 				self.periods = [];
 				
-				let currentYear = new Date().getFullYear();
-				//Show years from now, back to 2013
-				while ( currentYear >= 2013 ) {
+				let currentYear = EthiopianCalendar.newDate().year();
+				//Show years from now, back to 2000
+				while ( currentYear >= 2000 ) {
 					self.periods.push({
 						displayName: currentYear.toString(),
 						id: currentYear.toString()
@@ -1646,7 +1655,19 @@ report.controller("ReportController",
 				self.selectedPeriod = self.periods[0];
 
 
-				self.months = [ {"displayName": i18next.t("January"), "id": "01"}, {"displayName": i18next.t("February"), "id": "02"}, {"displayName": i18next.t("March"), "id": "03"}, {"displayName": i18next.t("April"), "id": "04"}, {"displayName": i18next.t("May"), "id": "05"}, {"displayName": i18next.t("June"), "id": "06"}, {"displayName": i18next.t("July"), "id": "07"}, {"displayName": i18next.t("August"), "id": "08"}, {"displayName": i18next.t("September"), "id": "09"}, {"displayName": i18next.t("October"), "id": "10"}, {"displayName": i18next.t("November"), "id": "11"}, {"displayName": i18next.t("December"), "id": "12"} ];
+				self.months = [ 
+					{"displayName": i18next.t("Meskerem"), "id": "01"}, 
+					{"displayName": i18next.t("Tikimt"), "id": "02"}, 
+					{"displayName": i18next.t("Hidar"), "id": "03"}, 
+					{"displayName": i18next.t("Tahisas"), "id": "04"}, 
+					{"displayName": i18next.t("Tir"), "id": "05"}, 
+					{"displayName": i18next.t("Yekatit"), "id": "06"}, 
+					{"displayName": i18next.t("Megabit"), "id": "07"}, 
+					{"displayName": i18next.t("Miazia"), "id": "08"}, 
+					{"displayName": i18next.t("Ginbot"), "id": "09"}, 
+					{"displayName": i18next.t("Sene"), "id": "10"}, 
+					{"displayName": i18next.t("Hamle"), "id": "11"},
+					 {"displayName": i18next.t("Nehase"), "id": "12"} ];
 				self.selectedMonth = null;
 
 

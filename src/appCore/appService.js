@@ -9,7 +9,7 @@ import "angular";
 
 import math from "./appServiceMath.js";
 import notification from "./appServiceNotification.js";
-import period from "./appServicePeriod.js";
+import period from "./appServicePeriodEthiopian.js";
 import request from "./appServiceRequest.js";
 
 angular.module("appService", ["d2"])
